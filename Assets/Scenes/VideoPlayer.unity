@@ -1141,8 +1141,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 639720015}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 367, y: 215, z: 6.52}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalPosition: {x: 400, y: 640, z: 6.52}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_Children:
   - {fileID: 901444564}
   - {fileID: 1096058098}
@@ -1166,11 +1166,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  m_BlockingObjects: 1
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  showDebug: 0
+  showDebug: 1
 --- !u!114 &639720018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1182,10 +1182,10 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 6
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 640, y: 960}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1866,7 +1866,7 @@ MonoBehaviour:
   DoNotTesselate: 0
   savedPos: {x: 0, y: 0, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 122.333336, y: 71.666664}
+  savedRectSize: {x: 640, y: 1024}
   savedColor: {r: 0.13725491, g: 0.121568635, b: 0.1254902, a: 1}
   savedTextUV0: {x: 0, y: 0}
   savedFill: 1
@@ -1927,18 +1927,20 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 6
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 5
-    m_MaxSize: 40
-    m_Alignment: 7
+    m_MinSize: 0
+    m_MaxSize: 74
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\xD3culos Virtual\n"
+  m_Text: 'VR
+
+'
 --- !u!222 &963208518
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1957,11 +1959,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: 0, y: 0, z: 0}
+  savedPos: {x: 0.0000047683716, y: -446, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 70, y: 20}
+  savedRectSize: {x: 200, y: 80}
   savedColor: {r: 0.3254902, g: 1, b: 0.68235296, a: 1}
-  savedTextUV0: {x: 0.40625, y: 0.7529297}
+  savedTextUV0: {x: 0.026367188, y: 0}
   savedFill: 0
 --- !u!1 &988934407
 GameObject:
@@ -1973,7 +1975,6 @@ GameObject:
   - component: {fileID: 988934408}
   - component: {fileID: 988934411}
   - component: {fileID: 988934410}
-  - component: {fileID: 988934409}
   - component: {fileID: 988934412}
   m_Layer: 5
   m_Name: Text
@@ -1989,30 +1990,17 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 988934407}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 63, z: 0}
+  m_LocalPosition: {x: 0, y: -50, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1200346397}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 63}
-  m_SizeDelta: {x: 160, y: 27.8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 0, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &988934409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 988934407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 0
 --- !u!114 &988934410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2034,11 +2022,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 8
+    m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 32
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2064,11 +2052,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: 0, y: 0, z: 0}
+  savedPos: {x: 0.0000047683716, y: -49.999992, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 94, y: 27.8}
+  savedRectSize: {x: 560, y: 844}
   savedColor: {r: 0.32941177, g: 1, b: 0.68235296, a: 1}
-  savedTextUV0: {x: 0.5332031, y: 0.5}
+  savedTextUV0: {x: 0.020507812, y: 0.029296875}
   savedFill: 0
 --- !u!1 &997140974
 GameObject:
@@ -2214,7 +2202,7 @@ MonoBehaviour:
   savedUp: {x: 0, y: 1, z: 0}
   savedRectSize: {x: 102.19755, y: 34.100006}
   savedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  savedTextUV0: {x: 0.33984375, y: 0.79003906}
+  savedTextUV0: {x: 0.16210938, y: 0}
   savedFill: 0
 --- !u!114 &1019710611
 MonoBehaviour:
@@ -2288,10 +2276,10 @@ RectTransform:
   m_Father: {fileID: 1096058098}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 122.12, y: 196}
+  m_SizeDelta: {x: -16, y: -16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1019800790
 MonoBehaviour:
@@ -2338,9 +2326,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: 0, y: 0, z: 0}
+  savedPos: {x: 0.00000055134296, y: -0.000001475215, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 122.12, y: 196}
+  savedRectSize: {x: 624, y: 1008}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
   savedTextUV0: {x: 0, y: 0}
   savedFill: 1
@@ -2455,7 +2443,7 @@ MonoBehaviour:
   DoNotTesselate: 0
   savedPos: {x: 0, y: 0, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 122.333336, y: 71.666664}
+  savedRectSize: {x: 640, y: 1024}
   savedColor: {r: 0.121568635, g: 0.121568635, b: 0.121568635, a: 1}
   savedTextUV0: {x: 0, y: 0}
   savedFill: 1
@@ -2513,7 +2501,7 @@ MonoBehaviour:
   savedUp: {x: 0.009337162, y: 0.9999564, z: 0}
   savedRectSize: {x: 115.19995, y: 33.600006}
   savedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  savedTextUV0: {x: 0.33984375, y: 0.79003906}
+  savedTextUV0: {x: 0.16210938, y: 0}
   savedFill: 0
 --- !u!114 &1171328000
 MonoBehaviour:
@@ -2589,10 +2577,10 @@ RectTransform:
   m_Father: {fileID: 901444564}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 222.1}
+  m_SizeDelta: {x: -80, y: -80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1200346398
 MonoBehaviour:
@@ -2676,18 +2664,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 6
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 7
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Retrato
+  m_Text: 'Portrait
 
 '
 --- !u!222 &1200897943
@@ -2708,11 +2696,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: 0, y: 0, z: 0}
+  savedPos: {x: 0.0000047683716, y: -500.9, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 70, y: 20}
+  savedRectSize: {x: 200, y: 80}
   savedColor: {r: 0.3254902, g: 1, b: 0.68235296, a: 1}
-  savedTextUV0: {x: 0.23828125, y: 0.79003906}
+  savedTextUV0: {x: 0, y: 0.015136719}
   savedFill: 0
 --- !u!1 &1264820419
 GameObject:
@@ -3692,17 +3680,17 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1491385457}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -50.899994, z: 0}
+  m_LocalPosition: {x: 0, y: -253, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1200897941}
   m_Father: {fileID: 1200346397}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -50.899994}
-  m_SizeDelta: {x: 70, y: 20}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 219}
+  m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1491385459
 MonoBehaviour:
@@ -3801,9 +3789,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: 0, y: 0, z: 0}
+  savedPos: {x: 0.0000047683716, y: -500.9, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 70, y: 20}
+  savedRectSize: {x: 200, y: 80}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
   savedTextUV0: {x: 0, y: 0}
   savedFill: 1
@@ -3869,17 +3857,17 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1560223123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -13.6, z: 0}
+  m_LocalPosition: {x: 0, y: -83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963208516}
   m_Father: {fileID: 1200346397}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -13.6}
-  m_SizeDelta: {x: 70, y: 20}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 389}
+  m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1560223125
 MonoBehaviour:
@@ -3978,9 +3966,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoNotTesselate: 0
-  savedPos: {x: 0, y: 0, z: 0}
+  savedPos: {x: 0.0000047683716, y: -446, z: 0}
   savedUp: {x: 0, y: 1, z: 0}
-  savedRectSize: {x: 70, y: 20}
+  savedRectSize: {x: 200, y: 80}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
   savedTextUV0: {x: 0, y: 0}
   savedFill: 1

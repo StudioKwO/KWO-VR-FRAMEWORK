@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.XR;
 
@@ -33,11 +34,13 @@ public class PlayerController : MonoBehaviour
 
     private VideoController videoController;
     private MenuController menuController;
+    private StartMenu startMenu;
     private Transform menuPivot;
     private Transform cameraTrans;
     private float lastYAngle;
 
     public GameObject controls;
+
 
     public void UpdateState(AppState newState)
     {
@@ -67,6 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         videoController = controls.GetComponent<VideoController>();
         menuController = controls.GetComponent<MenuController>();
+        startMenu = GetComponentInChildren<StartMenu>();
         menuPivot = controls.transform.parent;
         cameraTrans = GetComponentInChildren<Camera>().gameObject.transform;
 
@@ -95,40 +99,40 @@ public class PlayerController : MonoBehaviour
         }
 
         //TODO: Correct the functionality of the button of the canvas.
-        Vector2 pos;
-        RaycastHit2D hit;
+        //Debug.Log(string.Format("The position of the vr mode button on the viewport is: {0}", vrModeButton.transform.position));
+        //Debug.Log(string.Format("The position of the portrait mode button on the viewport is: {0}",portraitModeButton.transform.position));
         while (currentState == AppState.MENU)
         {
-            if (Input.touchCount > 0)
+
+            if (Input.touchCount > 0 && startMenu.CanInteract)
             {
-                Debug.Log("Touch input");
 
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    pos = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+                    Debug.Log(string.Format("Touch input position: {0}", Input.GetTouch(0).position));
 
-                    hit = Physics2D.Raycast(pos, Vector2.zero);
-
-                    if (hit)
+                    //Check the collision with the button and call the on click event
+                    if (startMenu.ContaintButton(StartButton.VR,Input.GetTouch(0).position))
                     {
-                        //Check the collision with the button and call the on click event
-                        if(hit.collider.name == "VrModeButton")
-                        {
-                            Debug.Log("Click of the vr mode button");
-                        }
-                        else if(hit.collider.name == "PortraitModeButton")
-                        {
-                            Debug.Log("Click of the portrait mode button");
-                        }
+                        Debug.Log("Click of the vr mode button");
+                        startMenu.BeginButtonPressed(StartButton.VR);
 
                     }
-                }
+                    else if (startMenu.ContaintButton(StartButton.PORTRAIT, Input.GetTouch(0).position))
+                    {
+                        Debug.Log("Click of the portrait mode button");
 
+                        startMenu.BeginButtonPressed(StartButton.PORTRAIT);
+                    }
+
+                }
             }
 
             yield return null;
         }
+       
     }
+
 
     public IEnumerator PlayerPortraitUpdate()
     {
@@ -172,6 +176,7 @@ public class PlayerController : MonoBehaviour
 
                 Camera.main.ResetAspect();
                 UpdateState(AppState.VIDEO_PORTRAIT);
+                continue;
             }
 
             //Change to world position of the ray so that I can get the position of the player. Update the player so that in the portrait mode, the player can be clicked. It can get tricky.

@@ -1,0 +1,6 @@
+Log das atividades:
+
+01/11/2017
+- Conitnuação da implementação da tela inicial com a opção de iniciar o app no modo VR, ou no modo retrato.
+- Criação dos retangulos dos botões de interação dessas opções, onde como estou utilizando Curve UI, tive que criar um mode de interação customizada.
+- Ainda existem bugs de alinhamento do video, na rotação, e na interação dos butões do video player no modo portrait.
