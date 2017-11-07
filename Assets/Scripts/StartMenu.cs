@@ -9,7 +9,8 @@ public enum StartButton
 }
 
 
-public class StartMenu : MonoBehaviour {
+public class StartMenu : MonoBehaviour
+{
 
     private FadeCanvas logoFade;
     private FadeCanvas optionsFade;
@@ -25,7 +26,7 @@ public class StartMenu : MonoBehaviour {
 
     private bool canInteract = false;
 
-    public bool CanInteract {  get { return canInteract; } }
+    public bool CanInteract { get { return canInteract; } }
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class StartMenu : MonoBehaviour {
                 logoFade = t;
                 continue;
             }
-            else if(t.gameObject.name == "DisplayOptions")
+            else if (t.gameObject.name == "DisplayOptions")
             {
                 displayFade = t;
                 continue;
@@ -62,7 +63,8 @@ public class StartMenu : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         playerController = GetComponentInParent<PlayerController>();
         StartCoroutine(Begin());
         vrRect = new Rect(new Vector2(vrModeButton.transform.position.x, vrModeButton.transform.position.y), vrModeButton.GetComponent<RectTransform>().rect.size);
@@ -73,9 +75,10 @@ public class StartMenu : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+
+    }
 
     public IEnumerator Begin()
     {
@@ -85,6 +88,7 @@ public class StartMenu : MonoBehaviour {
         yield return new WaitForSeconds(logoDisplayTime);
         logoFade.ToggleFade();
         yield return new WaitForSeconds(logoFade.timeToFade);
+        logoFade.gameObject.SetActive(false);
         displayFade.ToggleFade();
         canInteract = true;
 
@@ -101,7 +105,7 @@ public class StartMenu : MonoBehaviour {
                     toReturn = true;
                 break;
             case StartButton.PORTRAIT:
-                if(portraitRect.Contains(pos))
+                if (portraitRect.Contains(pos))
                     toReturn = true;
                 break;
             default:
@@ -135,7 +139,7 @@ public class StartMenu : MonoBehaviour {
     public IEnumerator VRButtonAction()
     {
         optionsFade.ToggleFade();
-        
+
         yield return new WaitForSeconds(optionsFade.timeToFade);
         playerController.UpdateState(AppState.VIDEO_VR);
 
@@ -150,7 +154,7 @@ public class StartMenu : MonoBehaviour {
     public IEnumerator PortraitButtonAction()
     {
         optionsFade.ToggleFade();
-        
+
         yield return new WaitForSeconds(optionsFade.timeToFade);
         playerController.UpdateState(AppState.VIDEO_PORTRAIT);
 

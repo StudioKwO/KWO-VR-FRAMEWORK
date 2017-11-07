@@ -1,6 +1,23 @@
 Log das atividades:
 
+TODO: 
+- Checar a transição entre o modo VR e o modo Portrait.
+- Checar o input com os elementos do video player, por enquanto apenas o botão de play/pause está funcionando.
+- Implementar botões e texturas melhores para o video player
+- Fazer uma lista de possíveis assets para o Nelson aprovar como botões de interface
+- Checar a implementação do timer entre a rotação do movo VR e modo Portrait.
+- Garantir num build que a UI inicial está nas proporções corretas
+- Fazer um botão para reinicar/sair do app ao termino do vídeo
+- Fazer uma build para IOS
+- Fazer uma build para Gear VR
+
 01/11/2017
 - Conitnuação da implementação da tela inicial com a opção de iniciar o app no modo VR, ou no modo retrato.
 - Criação dos retangulos dos botões de interação dessas opções, onde como estou utilizando Curve UI, tive que criar um mode de interação customizada.
 - Ainda existem bugs de alinhamento do video, na rotação, e na interação dos butões do video player no modo portrait.
+
+07/11/2017
+- Remoção do código utilizando o Curve UI para receber o input do usuário. Migração para o sistema utilizando o GVR input module e o sistema padrão da Unity.
+- Correção da rotação do video player durante o modo VR.
+- Tela de opção entre o modo VR e o modo Portrait está funcional.
+

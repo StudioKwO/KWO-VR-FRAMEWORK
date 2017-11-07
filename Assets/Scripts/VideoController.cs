@@ -5,12 +5,9 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 
 /*TODO: Make the input from cardboard be registered on the player to make the play, stop functionality
-* - Move the video player, with a dead zone so that the video player is not always stuck on the player view.
-* - Handle scrubber events
 * - Finish the usability of the player
-* - Make the timer for the fade of the video control.
-* - Research VRTK framework for the interactive experiences.
-* - Research Vive controllers usage.
+* - Need to make the ui to move when in portrait mode so that it is stuck to the user view
+* - Check the asset store for asset packs that can be used for the 
 */
 
 /**

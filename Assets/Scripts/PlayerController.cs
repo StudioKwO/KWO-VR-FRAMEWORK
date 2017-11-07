@@ -9,6 +9,7 @@ using UnityEngine.XR;
 //TODO: Figure out how to connect the touch input with the curveUI.
 // https://gamedev.stackexchange.com/questions/93592/graphics-raycaster-of-unity-how-does-it-work check this for the graphics raycast
 // Solution maybe that I change the ui to be on world space instead of screen space.
+// Change the videoplayer ui render type when on portrait mode
 
 public enum AppState
 {
@@ -38,8 +39,11 @@ public class PlayerController : MonoBehaviour
     private Transform menuPivot;
     private Transform cameraTrans;
     private float lastYAngle;
+    private GvrPointerInputModule vrInputModule;
+    private StandaloneInputModule touchInputModule;
 
     public GameObject controls;
+    public GameObject eventSystem;
 
 
     public void UpdateState(AppState newState)
@@ -49,12 +53,18 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case AppState.VIDEO_VR:
+                vrInputModule.enabled = true;
+                touchInputModule.enabled = false;
                 StartCoroutine(PlayerVRUpdate());
                 break;
             case AppState.VIDEO_PORTRAIT:
+                vrInputModule.enabled = false;
+                touchInputModule.enabled = true;
                 StartCoroutine(PlayerPortraitUpdate());
                 break;
             case AppState.MENU:
+                vrInputModule.enabled = false;
+                touchInputModule.enabled = true;
                 StartCoroutine(PlayerMenuUpdate());
                 break;
             default:
@@ -73,6 +83,8 @@ public class PlayerController : MonoBehaviour
         startMenu = GetComponentInChildren<StartMenu>();
         menuPivot = controls.transform.parent;
         cameraTrans = GetComponentInChildren<Camera>().gameObject.transform;
+        vrInputModule = eventSystem.GetComponent<GvrPointerInputModule>();
+        touchInputModule = eventSystem.GetComponent<StandaloneInputModule>();
 
         //Start the application in the menu state
         UpdateState(AppState.MENU);
@@ -98,7 +110,7 @@ public class PlayerController : MonoBehaviour
             Camera.main.ResetAspect();
         }
 
-        //TODO: Correct the functionality of the button of the canvas.
+        //TODO: this is the place where the postion of the canvas should be set for the portrait mode
         //Debug.Log(string.Format("The position of the vr mode button on the viewport is: {0}", vrModeButton.transform.position));
         //Debug.Log(string.Format("The position of the portrait mode button on the viewport is: {0}",portraitModeButton.transform.position));
         while (currentState == AppState.MENU)
@@ -107,25 +119,6 @@ public class PlayerController : MonoBehaviour
             if (Input.touchCount > 0 && startMenu.CanInteract)
             {
 
-                if (Input.GetTouch(0).phase == TouchPhase.Began)
-                {
-                    Debug.Log(string.Format("Touch input position: {0}", Input.GetTouch(0).position));
-
-                    //Check the collision with the button and call the on click event
-                    if (startMenu.ContaintButton(StartButton.VR,Input.GetTouch(0).position))
-                    {
-                        Debug.Log("Click of the vr mode button");
-                        startMenu.BeginButtonPressed(StartButton.VR);
-
-                    }
-                    else if (startMenu.ContaintButton(StartButton.PORTRAIT, Input.GetTouch(0).position))
-                    {
-                        Debug.Log("Click of the portrait mode button");
-
-                        startMenu.BeginButtonPressed(StartButton.PORTRAIT);
-                    }
-
-                }
             }
 
             yield return null;
@@ -141,20 +134,31 @@ public class PlayerController : MonoBehaviour
             Input.gyro.enabled = true;
             if (!XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
             {
-                XRSettings.LoadDeviceByName("Cardboard");
-                yield return null;
+                yield return new WaitForSeconds(1);
 
-                XRSettings.enabled = true;
-                UpdateState(AppState.VIDEO_VR);
-                continue;
+                if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+                {
+
+                    XRSettings.LoadDeviceByName("Cardboard");
+                    yield return null;
+
+                    XRSettings.enabled = true;
+                    UpdateState(AppState.VIDEO_VR);
+                    continue;
+                }
             }
 
             //Check the way the video is rotating in each device orientation.
             if (SystemInfo.supportsGyroscope && Input.deviceOrientation == DeviceOrientation.Portrait)
             {
-                Camera.main.transform.localRotation = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, Input.gyro.attitude.z, -Input.gyro.attitude.w);
-                Camera.main.transform.Rotate(90, 0, 0);
-                Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0f, Camera.main.transform.rotation.eulerAngles.y, 0f));
+                yield return new WaitForSeconds(1);
+
+                if (Input.deviceOrientation == DeviceOrientation.Portrait)
+                {
+                    Camera.main.transform.localRotation = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, Input.gyro.attitude.z, -Input.gyro.attitude.w);
+                    Camera.main.transform.Rotate(90, 0, 0);
+                    Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0f, Camera.main.transform.rotation.eulerAngles.y, 0f));
+                }
 
             }
 
@@ -169,14 +173,20 @@ public class PlayerController : MonoBehaviour
 
         while (currentState == AppState.VIDEO_VR)
         {
+
             if (XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
             {
-                XRSettings.LoadDeviceByName("");
-                yield return null;
+                yield return new WaitForSeconds(1);
 
-                Camera.main.ResetAspect();
-                UpdateState(AppState.VIDEO_PORTRAIT);
-                continue;
+                if (Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
+                {
+                    XRSettings.LoadDeviceByName("");
+                    yield return null;
+
+                    Camera.main.ResetAspect();
+                    UpdateState(AppState.VIDEO_PORTRAIT);
+                    continue;
+                }
             }
 
             //Change to world position of the ray so that I can get the position of the player. Update the player so that in the portrait mode, the player can be clicked. It can get tricky.
@@ -195,7 +205,9 @@ public class PlayerController : MonoBehaviour
             //Debug.Log(string.Format("The delta angle between the player and the menu is: {0}", deltaY));
             if (!menuController.IsRotating && Mathf.Abs(deltaY) > menuController.minRotationAngle)
             {
-                if (Mathf.Abs(lastYAngle - cameraTrans.rotation.eulerAngles.y) <= 0.01f)
+                //Need to check the rotation of the camera, something is going wrong 
+                //Debug.Log(string.Format("The delta of the rotation of the camera and the video player pivot is: {0}", Mathf.Abs(Mathf.DeltaAngle(lastYAngle, cameraTrans.rotation.eulerAngles.y))));
+                if (Mathf.Abs(Mathf.DeltaAngle(lastYAngle,cameraTrans.rotation.eulerAngles.y)) <= 0.001f)
                 {
                     //Rotate the menu options to the camera rotation. TODO:Add the contribution of the player speed to catch up with him.
                     menuController.RotateAdd(new Vector3(0.0f, deltaY), menuPivot.gameObject);
