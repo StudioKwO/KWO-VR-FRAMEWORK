@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 /*TODO: Make the input from cardboard be registered on the player to make the play, stop functionality
 * - Finish the usability of the player
-* - Need to make the ui to move when in portrait mode so that it is stuck to the user view
-* - Check the asset store for asset packs that can be used for the 
 */
 
 /**
@@ -18,11 +16,15 @@ using UnityEngine.UI;
 */
 public class VideoController : MonoBehaviour
 {
+
     /// <summary>
     /// 360 video sphere
     /// </summary>
     public GameObject videoSphere;
     public float secondsToSkip = 3.0f;
+
+    public delegate void VideoEnd();
+    public event VideoEnd OnVideoEnd;
 
     /// <summary>
     /// Video player controller
@@ -124,7 +126,7 @@ public class VideoController : MonoBehaviour
                     videoPlayer.Play();
                 StartCoroutine(UpdateVideoPortrait());
                 break;
-            case AppState.MENU:
+            case AppState.MENU_VR:
                 //Do nothing, the video player should not be interactive on a menu
                 break;
             default:
@@ -147,12 +149,12 @@ public class VideoController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 
     public IEnumerator UpdateVideoPortrait()
     {
-        while(playerController.State == AppState.VIDEO_PORTRAIT)
+        while (playerController.State == AppState.VIDEO_PORTRAIT)
         {
             if ((!videoPlayer.isPrepared || !videoPlayer.isPlaying))
             {
@@ -177,12 +179,24 @@ public class VideoController : MonoBehaviour
                 videoPosition.text = FormatTime(videoPlayer.frame / videoPlayer.frameRate);
                 videoDuration.text = FormatTime(videoPlayer.frameCount / videoPlayer.frameRate);
 
+                //Need to change so that the portrait menu is the one called, and not the regular VR menu
+                if (videoScrubber.value == videoScrubber.maxValue)
+                {
+                    if (OnVideoEnd != null)
+                    {
+                        OnVideoEnd();
+                        playerController.UpdateState(AppState.EXIT_MENU_PORTRAIT);
+                    }
+                }
+
 
             }
             else
             {
                 videoScrubber.value = 0;
             }
+
+           
 
 
             yield return null;
@@ -216,6 +230,15 @@ public class VideoController : MonoBehaviour
                 videoPosition.text = FormatTime(videoPlayer.frame / videoPlayer.frameRate);
                 videoDuration.text = FormatTime(videoPlayer.frameCount / videoPlayer.frameRate);
 
+                if (videoScrubber.value == videoScrubber.maxValue)
+                {
+                    if(OnVideoEnd != null)
+                    {
+                        OnVideoEnd();
+                        playerController.UpdateState(AppState.EXIT_MENU_VR);
+                    }
+                }
+
 
             }
             else
@@ -223,14 +246,14 @@ public class VideoController : MonoBehaviour
                 videoScrubber.value = 0;
             }
             yield return null;
-        }     
+        }
     }
 
     public void OnSkipForwards()
     {
         ulong newFrame = (ulong)(videoPlayer.frame + (long)(secondsToSkip * videoPlayer.frameRate));
 
-        if(newFrame <= videoPlayer.frameCount)
+        if (newFrame <= videoPlayer.frameCount)
         {
             videoPlayer.frame = (long)newFrame;
         }
@@ -259,7 +282,7 @@ public class VideoController : MonoBehaviour
     {
         long newFrame = (long)(val * videoPlayer.frameCount);
 
-        if(videoPlayer.isPrepared)
+        if (videoPlayer.isPrepared)
         {
             videoPlayer.frame = newFrame;
         }

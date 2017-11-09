@@ -9,6 +9,7 @@ public class FadeCanvas : MonoBehaviour
 
     public bool startFaded = true;
     private bool isFaded = true;
+    public bool IsFaded {  get { return isFaded; } }
     public float timeToFade = 0.35f;
     public iTween.EaseType easeType = iTween.EaseType.easeInCubic;
 
@@ -46,16 +47,14 @@ public class FadeCanvas : MonoBehaviour
     {
 
         Hashtable table = new Hashtable();
-        isFaded = false;
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
-
+       
         table.Add("from", canvasGroup.alpha);
         table.Add("to", 1.0f);
         table.Add("time", timeToFade);
         table.Add("name", name);
         table.Add("looptype", loopType);
         table.Add("onupdatetarget", gameObject);
+        table.Add("oncomplete", "OnFadeInComplete");
         table.Add("onupdate", "OnFadeCanvasCallback");
         table.Add("easetype", easeType);
 
@@ -66,16 +65,14 @@ public class FadeCanvas : MonoBehaviour
     public void OnFadeOut(string name = "", iTween.LoopType loopType = iTween.LoopType.none)
     {
         Hashtable table = new Hashtable();
-        isFaded = true;
-
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
 
         table.Add("from", canvasGroup.alpha);
         table.Add("to", 0.0f);
         table.Add("time", timeToFade);
         table.Add("name", name);
+        table.Add("looptype", loopType);
         table.Add("onupdatetarget", gameObject);
+        table.Add("oncomplete", "OnFadeOutComplete");
         table.Add("onupdate", "OnFadeCanvasCallback");
         table.Add("easetype", easeType);
 
@@ -98,6 +95,20 @@ public class FadeCanvas : MonoBehaviour
     void OnFadeCanvasCallback(float newValue)
     {
         canvasGroup.alpha = newValue;
+    }
+
+    void OnFadeInComplete()
+    {
+        isFaded = false;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+    }
+
+    void OnFadeOutComplete()
+    {
+        isFaded = true;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
 

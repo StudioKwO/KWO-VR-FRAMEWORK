@@ -17,10 +17,8 @@ public class MenuController : MonoBehaviour
     private bool isRotating = false;
     private bool isInteracting = false;
     private bool inVR = true;
-    private GameObject reticlePointer;
-    private MeshRenderer meshRender;
 
-
+    private MeshRenderer reticleMeshRender;
 
     /// <summary>
     /// Display canvas of the video player, where the fade effect will be applied
@@ -67,7 +65,6 @@ public class MenuController : MonoBehaviour
         PlayerController.OnPlayerStateUpdated += OnPlayerStateUpdated;
     }
 
-
     private void OnDisable()
     {
         PlayerController.OnPlayerStateUpdated -= OnPlayerStateUpdated;
@@ -83,7 +80,7 @@ public class MenuController : MonoBehaviour
             case AppState.VIDEO_PORTRAIT:
                 inVR = false;
                 break;
-            case AppState.MENU:
+            case AppState.MENU_VR:
                 break;
             default:
                 break;
@@ -92,8 +89,8 @@ public class MenuController : MonoBehaviour
 
     private void Awake()
     {
-        reticlePointer = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<GvrReticlePointer>().gameObject;
-        meshRender = reticlePointer.GetComponent<MeshRenderer>();
+        GameObject reticlePointer = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<GvrReticlePointer>().gameObject;
+        reticleMeshRender = reticlePointer.GetComponent<MeshRenderer>();
     }
 
     // Use this for initialization
@@ -101,14 +98,13 @@ public class MenuController : MonoBehaviour
     {
         fadeCanvas = GetComponentInChildren<FadeCanvas>();
         menuState = MenuState.HIDE;
-        meshRender.enabled = false;
+        reticleMeshRender.enabled = false;
 
     }
 
     public void OnFadeIn()
     {
-        //This function will be called to fade in the video controls, using ITween
-        meshRender.enabled = true;
+        reticleMeshRender.enabled = true;
         fadeCanvas.OnFadeIn("video_controller_fadein");
         StartCoroutine(FadeTimer());
     }
@@ -134,7 +130,7 @@ public class MenuController : MonoBehaviour
     {
         //This function will be called to fade out the video controls, using ITween
         fadeCanvas.OnFadeOut("video_controller_fadeout");
-        meshRender.enabled = false;
+        reticleMeshRender.enabled = false;
     }
 
     public void OnPointerEnter()

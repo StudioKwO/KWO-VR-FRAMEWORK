@@ -2,12 +2,18 @@ Log das atividades:
 
 TODO: 
 - Checar a transição entre o modo VR e o modo Portrait.
-- Checar o input com os elementos do video player, por enquanto apenas o botão de play/pause está funcionando.
+- Escolher o texto que vai estar presente no menu final
 - Implementar botões e texturas melhores para o video player
 - Fazer uma lista de possíveis assets para o Nelson aprovar como botões de interface
 - Checar a implementação do timer entre a rotação do movo VR e modo Portrait.
 - Garantir num build que a UI inicial está nas proporções corretas
 - Fazer um botão para reinicar/sair do app ao termino do vídeo
+- Potencialmente fazer uma refatorização do código, e fazer com que o fade dos menus sejam funções abstratas, 
+  ou derivem de um mesmo tipo de objeto, para facilitar a implementação do fade dependendo do tipo de interface.
+- Terminar o menu de reinicar o video.
+- Fazer com que o video de VR e de Portrait funcionem de modos distintos.
+- Opções finais aparecem quando o último frame é selecionado, mas a textura do video não está correspondendo ao último frame.
+- O highlight dos botões da tela final não estão funcionando como devem, o high persiste mesmo depois de não mais selecionando o botão.
 - Fazer uma build para IOS
 - Fazer uma build para Gear VR
 
@@ -20,4 +26,13 @@ TODO:
 - Remoção do código utilizando o Curve UI para receber o input do usuário. Migração para o sistema utilizando o GVR input module e o sistema padrão da Unity.
 - Correção da rotação do video player durante o modo VR.
 - Tela de opção entre o modo VR e o modo Portrait está funcional.
+
+09/11/2017
+- Correção da interação com o menu do player
+- Criação do script de execução do menu final
+- Implementação base do script da tela final
+- Correções na funcionalidade do fade canvas
+- Implementação da tela final,ainda existem bugs de highlight e do pointer não aparecendo quando deve.
+- Mudança da estrutura do app para fazer separar a funcionalidade entre módulo VR e módulo retrato.
+- Atualização do movimento da câmera no módulo VR
 
