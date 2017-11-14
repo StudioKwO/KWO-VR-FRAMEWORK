@@ -11,6 +11,8 @@ public class ExitMenu : MonoBehaviour {
 
     private MeshRenderer reticleMeshRender;
 
+    public MenuType type;
+
 
     // Use this for initialization
     void Start () {
@@ -30,21 +32,39 @@ public class ExitMenu : MonoBehaviour {
 
     private void OnEnable()
     {
-        videoController.OnVideoEnd += VideoController_OnVideoEnd;
+        if(type == MenuType.VR)
+        {
+            videoController.OnVideoVrEnd += OnVideoEnd;
+        }
+        else
+        {
+            videoController.OnVideoPortraitEnd += OnVideoEnd;
+        }
+
+        
     }
 
 
     private void OnDisable()
     {
-        videoController.OnVideoEnd -= VideoController_OnVideoEnd;
+        if(type == MenuType.VR)
+        {
+            videoController.OnVideoVrEnd -= OnVideoEnd;
+        }
+        else
+        {
+            videoController.OnVideoPortraitEnd -= OnVideoEnd;
+        }
+        
     }
 
-    private void VideoController_OnVideoEnd()
+    private void OnVideoEnd()
     {
         menuController.OnFadeOut();
         fadeCanvas.OnFadeIn();
         reticleMeshRender.enabled = true;
     }
+
 
     // Update is called once per frame
     void Update () {

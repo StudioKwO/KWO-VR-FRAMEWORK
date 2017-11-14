@@ -36,8 +36,8 @@ public class PlayerController : MonoBehaviour
     private AppState currentState;
     public AppState State { get { return currentState; } }
 
-    private VideoController videoController;
-    private MenuController menuController;
+    private MenuController vrMenuController;
+    private MenuController portraitMenuController;
     private StartMenu startMenu;
     private Transform menuPivot;
     private Transform cameraTrans;
@@ -45,7 +45,8 @@ public class PlayerController : MonoBehaviour
     private GvrPointerInputModule vrInputModule;
     private StandaloneInputModule touchInputModule;
 
-    public GameObject controls;
+    public GameObject vrControls;
+    public GameObject portraitControls;
     public GameObject eventSystem;
 
 
@@ -91,19 +92,24 @@ public class PlayerController : MonoBehaviour
             OnPlayerStateUpdated(newState);
     }
 
+    private void Awake()
+    {
+        StartCoroutine(ChangeToPortrait());
+    }
+
     // Use this for initialization
     void Start()
     {
-        videoController = controls.GetComponent<VideoController>();
-        menuController = controls.GetComponent<MenuController>();
+        vrMenuController = vrControls.GetComponent<MenuController>();
+        portraitMenuController = portraitControls.GetComponent<MenuController>();
         startMenu = GetComponentInChildren<StartMenu>();
-        menuPivot = controls.transform.parent;
+        menuPivot = vrControls.transform.parent;
         cameraTrans = GetComponentInChildren<Camera>().gameObject.transform;
         vrInputModule = eventSystem.GetComponent<GvrPointerInputModule>();
         touchInputModule = eventSystem.GetComponent<StandaloneInputModule>();
 
         //Start the application in the menu state
-        UpdateState(AppState.MENU_VR);
+        UpdateState(AppState.MENU_PORTRAIT);
     }
 
     // Update is called once per frame
@@ -122,72 +128,30 @@ public class PlayerController : MonoBehaviour
         //TODO: this is the place where the postion of the canvas should be set for the portrait mode
         //Debug.Log(string.Format("The position of the vr mode button on the viewport is: {0}", vrModeButton.transform.position));
         //Debug.Log(string.Format("The position of the portrait mode button on the viewport is: {0}",portraitModeButton.transform.position));
+        yield return ChangeToVr();
+
         while (currentState == AppState.MENU_VR)
         {
-
-            if (XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-            {
-                yield return new WaitForSeconds(1);
-
-                if (Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-                {
-                    XRSettings.LoadDeviceByName("");
-                    yield return null;
-
-                    Camera.main.ResetAspect();
-                    UpdateState(AppState.MENU_PORTRAIT);
-                    continue;
-                }
-            }
-
             yield return null;
         }
-       
+
     }
 
     public IEnumerator PlayerPortraitMenuUpdate()
     {
-        while(currentState == AppState.MENU_PORTRAIT)
+        yield return ChangeToPortrait();
+        while (currentState == AppState.MENU_PORTRAIT)
         {
-            if (!XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
-            {
-                yield return new WaitForSeconds(1);
-
-                if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
-                {
-
-                    XRSettings.LoadDeviceByName("Cardboard");
-                    yield return null;
-
-                    XRSettings.enabled = true;
-                    UpdateState(AppState.MENU_VR);
-                    continue;
-                }
-            }
-
             yield return null;
         }
     }
 
     public IEnumerator PlayerVrExitUpdate()
     {
-        while(currentState == AppState.EXIT_MENU_VR)
+        yield return ChangeToVr();
+
+        while (currentState == AppState.EXIT_MENU_VR)
         {
-            if (XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-            {
-                yield return new WaitForSeconds(1);
-
-                if (Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-                {
-                    XRSettings.LoadDeviceByName("");
-                    yield return null;
-
-                    Camera.main.ResetAspect();
-                    UpdateState(AppState.EXIT_MENU_PORTRAIT);
-                    continue;
-                }
-            }
-
 
             yield return null;
         }
@@ -195,28 +159,9 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlayerPortraitExitUpdate()
     {
-        Input.gyro.enabled = true;
-
+        yield return ChangeToPortrait();
         while (currentState == AppState.EXIT_MENU_PORTRAIT)
         {
-            
-            if (!XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
-            {
-                yield return new WaitForSeconds(1);
-
-                if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
-                {
-
-                    XRSettings.LoadDeviceByName("Cardboard");
-                    yield return null;
-
-                    XRSettings.enabled = true;
-                    UpdateState(AppState.EXIT_MENU_VR);
-                    continue;
-                }
-            }
-
-            //Inputs
 
             yield return null;
         }
@@ -225,40 +170,28 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlayerPortraitUpdate()
     {
+        yield return ChangeToPortrait();
         Input.gyro.enabled = true;
+
         while (currentState == AppState.VIDEO_PORTRAIT)
         {
-           
-            if (!XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+            if (Input.GetMouseButtonDown(0))
             {
-                yield return new WaitForSeconds(1);
-
-                if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+                //Debug.Log("Button clicked");
+                if (portraitMenuController.GetMenuState() == MenuState.HIDE)
                 {
-
-                    XRSettings.LoadDeviceByName("Cardboard");
-                    yield return null;
-
-                    XRSettings.enabled = true;
-                    UpdateState(AppState.VIDEO_VR);
-                    continue;
+                    portraitMenuController.SetState(MenuState.SHOW);
                 }
+
             }
 
             //Check the way the video is rotating in each device orientation.
-            if (SystemInfo.supportsGyroscope && Input.deviceOrientation == DeviceOrientation.Portrait)
+            if (Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.FaceDown || Input.deviceOrientation == DeviceOrientation.FaceUp || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown || Input.deviceOrientation == DeviceOrientation.LandscapeLeft)
             {
-                yield return new WaitForSeconds(1);
-
-                if (Input.deviceOrientation == DeviceOrientation.Portrait)
-                {
-                    Camera.main.transform.localRotation = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, Input.gyro.attitude.z, -Input.gyro.attitude.w);
-                    Camera.main.transform.Rotate(90, 0, 0);
-                    Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0f, Camera.main.transform.rotation.eulerAngles.y, 0f));
-                }
-
+                Camera.main.transform.localRotation = new Quaternion(Input.gyro.attitude.x, Input.gyro.attitude.y, Input.gyro.attitude.z, -Input.gyro.attitude.w);
+                Camera.main.transform.Rotate(90, 0, 0);
+                Camera.main.transform.rotation = Quaternion.Euler(new Vector3(-Camera.main.transform.rotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, 0f));
             }
-
 
             yield return null;
         }
@@ -267,47 +200,33 @@ public class PlayerController : MonoBehaviour
     public IEnumerator PlayerVRUpdate()
     {
         lastYAngle = 0.0f;
+        yield return ChangeToVr();
 
         while (currentState == AppState.VIDEO_VR)
         {
-
-            if (XRSettings.enabled && Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-            {
-                yield return new WaitForSeconds(1);
-
-                if (Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-                {
-                    XRSettings.LoadDeviceByName("");
-                    yield return null;
-
-                    Camera.main.ResetAspect();
-                    UpdateState(AppState.VIDEO_PORTRAIT);
-                    continue;
-                }
-            }
 
             //Change to world position of the ray so that I can get the position of the player. Update the player so that in the portrait mode, the player can be clicked. It can get tricky.
             if (Input.GetMouseButtonDown(0))
             {
                 //Debug.Log("Button clicked");
-                if (menuController.GetMenuState() == MenuController.MenuState.HIDE)
+                if (vrMenuController.GetMenuState() == MenuState.HIDE)
                 {
                     menuPivot.transform.localRotation = new Quaternion(menuPivot.transform.localRotation.x, cameraTrans.rotation.y, menuPivot.transform.localRotation.z, menuPivot.transform.localRotation.w);
-                    menuController.SetState(MenuController.MenuState.SHOW);
+                    vrMenuController.SetState(MenuState.SHOW);
                 }
 
             }
             float deltaY = Mathf.DeltaAngle(menuPivot.rotation.eulerAngles.y, cameraTrans.rotation.eulerAngles.y);
 
             //Debug.Log(string.Format("The delta angle between the player and the menu is: {0}", deltaY));
-            if (!menuController.IsRotating && Mathf.Abs(deltaY) > menuController.minRotationAngle)
+            if (!vrMenuController.IsRotating && Mathf.Abs(deltaY) > vrMenuController.minRotationAngle)
             {
                 //Need to check the rotation of the camera, something is going wrong 
                 //Debug.Log(string.Format("The delta of the rotation of the camera and the video player pivot is: {0}", Mathf.Abs(Mathf.DeltaAngle(lastYAngle, cameraTrans.rotation.eulerAngles.y))));
-                if (Mathf.Abs(Mathf.DeltaAngle(lastYAngle,cameraTrans.rotation.eulerAngles.y)) <= 0.001f)
+                if (Mathf.Abs(Mathf.DeltaAngle(lastYAngle, cameraTrans.rotation.eulerAngles.y)) <= 0.001f)
                 {
                     //Rotate the menu options to the camera rotation. TODO:Add the contribution of the player speed to catch up with him.
-                    menuController.RotateAdd(new Vector3(0.0f, deltaY), menuPivot.gameObject);
+                    vrMenuController.RotateAdd(new Vector3(0.0f, deltaY), menuPivot.gameObject);
                 }
                 else
                 {
@@ -323,5 +242,32 @@ public class PlayerController : MonoBehaviour
 
     }
 
-   
+    private IEnumerator ChangeToVr()
+    {
+        if (!XRSettings.enabled)
+        {
+
+            XRSettings.LoadDeviceByName("Cardboard");
+            yield return null;
+
+            XRSettings.enabled = true;
+
+        }
+    }
+
+    private IEnumerator ChangeToPortrait()
+    {
+        if (XRSettings.enabled)
+        {
+
+            XRSettings.LoadDeviceByName("");
+            yield return null;
+
+            Camera.main.ResetAspect();
+
+        }
+    }
+
+
+
 }

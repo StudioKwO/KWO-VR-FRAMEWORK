@@ -24,7 +24,10 @@ public class VideoController : MonoBehaviour
     public float secondsToSkip = 3.0f;
 
     public delegate void VideoEnd();
-    public event VideoEnd OnVideoEnd;
+    public event VideoEnd OnVideoVrEnd;
+    public event VideoEnd OnVideoPortraitEnd;
+
+    public MenuType type;
 
     /// <summary>
     /// Video player controller
@@ -117,14 +120,18 @@ public class VideoController : MonoBehaviour
         switch (newState)
         {
             case AppState.VIDEO_VR:
-                if (!videoPlayer.isPlaying)
+                if (!videoPlayer.isPlaying && type == MenuType.VR)
+                {
                     videoPlayer.Play();
-                StartCoroutine(UpdateVideoVR());
+                    StartCoroutine(UpdateVideoVR());
+                }
                 break;
             case AppState.VIDEO_PORTRAIT:
-                if (!videoPlayer.isPlaying)
+                if (!videoPlayer.isPlaying && type == MenuType.PORTRAIT)
+                {
                     videoPlayer.Play();
-                StartCoroutine(UpdateVideoPortrait());
+                    StartCoroutine(UpdateVideoPortrait());
+                }
                 break;
             case AppState.MENU_VR:
                 //Do nothing, the video player should not be interactive on a menu
@@ -182,9 +189,9 @@ public class VideoController : MonoBehaviour
                 //Need to change so that the portrait menu is the one called, and not the regular VR menu
                 if (videoScrubber.value == videoScrubber.maxValue)
                 {
-                    if (OnVideoEnd != null)
+                    if (OnVideoPortraitEnd != null)
                     {
-                        OnVideoEnd();
+                        OnVideoPortraitEnd();
                         playerController.UpdateState(AppState.EXIT_MENU_PORTRAIT);
                     }
                 }
@@ -196,7 +203,7 @@ public class VideoController : MonoBehaviour
                 videoScrubber.value = 0;
             }
 
-           
+
 
 
             yield return null;
@@ -232,9 +239,9 @@ public class VideoController : MonoBehaviour
 
                 if (videoScrubber.value == videoScrubber.maxValue)
                 {
-                    if(OnVideoEnd != null)
+                    if (OnVideoVrEnd != null)
                     {
-                        OnVideoEnd();
+                        OnVideoVrEnd();
                         playerController.UpdateState(AppState.EXIT_MENU_VR);
                     }
                 }

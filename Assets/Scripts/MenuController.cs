@@ -1,22 +1,29 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+public enum MenuState
+{
+    HIDE,
+    SHOW
+}
+
+public enum MenuType
+{
+    VR,
+    PORTRAIT
+}
+
 
 public class MenuController : MonoBehaviour
 {
-    public enum MenuState
-    {
-        HIDE,
-        SHOW
-    }
 
     private MenuState menuState;
 
     public float fadeTime = 3.0f;
     public float minRotationAngle = 60.0f;
+    public MenuType type;
     private bool isRotating = false;
     private bool isInteracting = false;
-    private bool inVR = true;
 
     private MeshRenderer reticleMeshRender;
 
@@ -33,8 +40,6 @@ public class MenuController : MonoBehaviour
     public bool IsRotating { get { return isRotating; } }
 
     public bool IsInteracting { get { return isInteracting; } }
-
-    public bool InVrMode { get { return inVR; } }
 
     public void SetState(MenuState newState)
     {
@@ -60,32 +65,32 @@ public class MenuController : MonoBehaviour
         menuState = newState;
     }
 
-    private void OnEnable()
-    {
-        PlayerController.OnPlayerStateUpdated += OnPlayerStateUpdated;
-    }
+    //private void OnEnable()
+    //{
+    //    PlayerController.OnPlayerStateUpdated += OnPlayerStateUpdated;
+    //}
 
-    private void OnDisable()
-    {
-        PlayerController.OnPlayerStateUpdated -= OnPlayerStateUpdated;
-    }
+    //private void OnDisable()
+    //{
+    //    PlayerController.OnPlayerStateUpdated -= OnPlayerStateUpdated;
+    //}
 
-    private void OnPlayerStateUpdated(AppState newState)
-    {
-        switch (newState)
-        {
-            case AppState.VIDEO_VR:
-                inVR = true;
-                break;
-            case AppState.VIDEO_PORTRAIT:
-                inVR = false;
-                break;
-            case AppState.MENU_VR:
-                break;
-            default:
-                break;
-        }
-    }
+    //private void OnPlayerStateUpdated(AppState newState)
+    //{
+    //    switch (newState)
+    //    {
+    //        case AppState.VIDEO_VR:
+    //            inVR = true;
+    //            break;
+    //        case AppState.VIDEO_PORTRAIT:
+    //            inVR = false;
+    //            break;
+    //        case AppState.MENU_VR:
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
 
     private void Awake()
     {
@@ -98,13 +103,16 @@ public class MenuController : MonoBehaviour
     {
         fadeCanvas = GetComponentInChildren<FadeCanvas>();
         menuState = MenuState.HIDE;
-        reticleMeshRender.enabled = false;
+        if (type == MenuType.VR)
+            reticleMeshRender.enabled = false;
 
     }
 
     public void OnFadeIn()
     {
-        reticleMeshRender.enabled = true;
+        if(type == MenuType.VR)
+            reticleMeshRender.enabled = true;
+
         fadeCanvas.OnFadeIn("video_controller_fadein");
         StartCoroutine(FadeTimer());
     }
@@ -113,7 +121,7 @@ public class MenuController : MonoBehaviour
     {
         yield return new WaitForSeconds(fadeTime);
 
-        while(inVR && (isRotating || isInteracting))
+        while (type == MenuType.VR && (isRotating || isInteracting))
         {
             yield return null;
         }
@@ -130,7 +138,8 @@ public class MenuController : MonoBehaviour
     {
         //This function will be called to fade out the video controls, using ITween
         fadeCanvas.OnFadeOut("video_controller_fadeout");
-        reticleMeshRender.enabled = false;
+        if (type == MenuType.VR)
+            reticleMeshRender.enabled = false;
     }
 
     public void OnPointerEnter()
@@ -152,7 +161,7 @@ public class MenuController : MonoBehaviour
         table.Add("time", 1.0f);
         table.Add("easetype", iTween.EaseType.easeInOutCubic);
         table.Add("oncomplete", "OnRotationComplete");
-        table.Add("oncompletetarget", this.gameObject);
+        table.Add("oncompletetarget", gameObject);
         table.Add("amount", value);
         iTween.RotateAdd(gameObject, table);
     }

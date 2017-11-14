@@ -1,19 +1,18 @@
 Log das atividades:
 
 TODO: 
-- Checar a transição entre o modo VR e o modo Portrait.
 - Escolher o texto que vai estar presente no menu final
 - Implementar botões e texturas melhores para o video player
 - Fazer uma lista de possíveis assets para o Nelson aprovar como botões de interface
-- Checar a implementação do timer entre a rotação do movo VR e modo Portrait.
-- Garantir num build que a UI inicial está nas proporções corretas
-- Fazer um botão para reinicar/sair do app ao termino do vídeo
-- Potencialmente fazer uma refatorização do código, e fazer com que o fade dos menus sejam funções abstratas, 
-  ou derivem de um mesmo tipo de objeto, para facilitar a implementação do fade dependendo do tipo de interface.
-- Terminar o menu de reinicar o video.
+- Corrigir as proporções dos ícones dos menus no modo portrait
+- Garantir que o app inicie no modo portrait, sem fazer o load do modo VR
 - Fazer com que o video de VR e de Portrait funcionem de modos distintos.
 - Opções finais aparecem quando o último frame é selecionado, mas a textura do video não está correspondendo ao último frame.
 - O highlight dos botões da tela final não estão funcionando como devem, o high persiste mesmo depois de não mais selecionando o botão.
+- A interação com o scroller está buggado, não responsivo, ou o highlight no video scroll está na posição errada em relação a posição do input.
+- Alterar o script scrubber events. Ele atualmente foi feito apenas para funcionar quando utilizando o modo VR, não é compatível com o modo Portrait (que causa a baixa responsávidade do scrubber do video player)
+- Investigar porque que o Gvr Controller está desativando quando debugging no editor
+- Menu no modo VR não está rotacionando quando faço o build atual.
 - Fazer uma build para IOS
 - Fazer uma build para Gear VR
 
@@ -35,4 +34,13 @@ TODO:
 - Implementação da tela final,ainda existem bugs de highlight e do pointer não aparecendo quando deve.
 - Mudança da estrutura do app para fazer separar a funcionalidade entre módulo VR e módulo retrato.
 - Atualização do movimento da câmera no módulo VR
+
+14/11/2017
+- Mudança para o sistema onde os menus de modo VR e modo Portrait estão separados
+- Adição do tipo de menu para cada item do menus.
+- Implementação do menu de pausa no modo portrait
+- Implementação do menu final no modo portrait
+- Correção do movimento da câmera no modo portrait, ela apenas se rotacionava no eixo Y, ela agora roda corretamente no eixo X e eixo Y.
+- Fatorização da funcionalidade de mudança no tipo de device, facilitando a mudança entre os modos VR e Portrait
+- 
 
