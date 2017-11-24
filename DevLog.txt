@@ -3,18 +3,12 @@ Log das atividades:
 TODO: 
 - Escolher o texto que vai estar presente no menu final
 - Implementar botões e texturas melhores para o video player
-- Fazer uma lista de possíveis assets para o Nelson aprovar como botões de interface
 - Corrigir as proporções dos ícones dos menus no modo portrait
-- Garantir que o app inicie no modo portrait, sem fazer o load do modo VR
-- Fazer com que o video de VR e de Portrait funcionem de modos distintos.
-- Opções finais aparecem quando o último frame é selecionado, mas a textura do video não está correspondendo ao último frame.
 - O highlight dos botões da tela final não estão funcionando como devem, o high persiste mesmo depois de não mais selecionando o botão.
 - A interação com o scroller está buggado, não responsivo, ou o highlight no video scroll está na posição errada em relação a posição do input.
 - Alterar o script scrubber events. Ele atualmente foi feito apenas para funcionar quando utilizando o modo VR, não é compatível com o modo Portrait (que causa a baixa responsávidade do scrubber do video player)
-- Investigar porque que o Gvr Controller está desativando quando debugging no editor
 - Menu no modo VR não está rotacionando quando faço o build atual.
-- Fazer uma build para IOS
-- Fazer uma build para Gear VR
+- Pular a tela de opção inicial, sempre começar esse projeto no modo VR.
 
 01/11/2017
 - Conitnuação da implementação da tela inicial com a opção de iniciar o app no modo VR, ou no modo retrato.
@@ -42,5 +36,12 @@ TODO:
 - Implementação do menu final no modo portrait
 - Correção do movimento da câmera no modo portrait, ela apenas se rotacionava no eixo Y, ela agora roda corretamente no eixo X e eixo Y.
 - Fatorização da funcionalidade de mudança no tipo de device, facilitando a mudança entre os modos VR e Portrait
-- 
+
+24/11/2017
+- Build inicial para Gear VR
+- Correção da interação VR do scroll do video.
+- Correção da proporção do player no modo VR e no modo portrait
+- Alteração no player controller para mudar o tipo de plataforma com facilidade
+- Adição do video final
+- Correção das proporções do player no modo portrait
 

@@ -6,10 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.XR;
 
-//TODO: Figure out how to connect the touch input with the curveUI.
+//TODO: 
 // https://gamedev.stackexchange.com/questions/93592/graphics-raycaster-of-unity-how-does-it-work check this for the graphics raycast
-// Solution maybe that I change the ui to be on world space instead of screen space.
-// Change the videoplayer ui render type when on portrait mode
 
 public enum AppState
 {
@@ -45,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private GvrPointerInputModule vrInputModule;
     private StandaloneInputModule touchInputModule;
 
+    public string deviceName;
     public GameObject vrControls;
     public GameObject portraitControls;
     public GameObject eventSystem;
@@ -247,7 +246,7 @@ public class PlayerController : MonoBehaviour
         if (!XRSettings.enabled)
         {
 
-            XRSettings.LoadDeviceByName("Cardboard");
+            XRSettings.LoadDeviceByName(deviceName);
             yield return null;
 
             XRSettings.enabled = true;

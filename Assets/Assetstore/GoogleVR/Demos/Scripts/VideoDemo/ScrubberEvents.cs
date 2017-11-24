@@ -56,6 +56,7 @@ public class ScrubberEvents : MonoBehaviour
                     newPositionHandle.transform.position.y,
                     newPositionHandle.transform.position.z);
                 setPos = true;
+
             }
         }
         if (!setPos)
@@ -92,10 +93,17 @@ public class ScrubberEvents : MonoBehaviour
 
         float pct = (newPositionHandle.transform.position.x - minX) / (maxX - minX);
 
+        pct = Mathf.Clamp01(pct);
+
         if (mgr != null)
         {
             long p = (long)(slider.maxValue * pct);
             mgr.VideoPlayer.frame = p;
         }
+    }
+
+    public void OnPointerClickPortrait(BaseEventData data)
+    {
+        //TERMINAR ESSA IMPLEMENTAÇÃO
     }
 }
