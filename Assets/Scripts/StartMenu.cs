@@ -23,6 +23,8 @@ public class StartMenu : MonoBehaviour
 
     public float logoDisplayTime = 2.0f;
     public float initalWait = 2.0f;
+    public bool skipOptions = false;
+    public bool skipLogo = false;
 
     private bool canInteract = false;
 
@@ -82,15 +84,23 @@ public class StartMenu : MonoBehaviour
 
     public IEnumerator Begin()
     {
-        canInteract = false;
-        yield return new WaitForSeconds(initalWait);
-        logoFade.ToggleFade();
-        yield return new WaitForSeconds(logoDisplayTime);
-        logoFade.ToggleFade();
-        yield return new WaitForSeconds(logoFade.timeToFade);
-        logoFade.gameObject.SetActive(false);
-        displayFade.ToggleFade();
-        canInteract = true;
+        if (!skipLogo)
+        {
+            canInteract = false;
+            yield return new WaitForSeconds(initalWait);
+            logoFade.ToggleFade();
+            yield return new WaitForSeconds(logoDisplayTime);
+            logoFade.ToggleFade();
+            yield return new WaitForSeconds(logoFade.timeToFade);
+            logoFade.gameObject.SetActive(false);
+            displayFade.ToggleFade();
+            canInteract = true;
+        }
+
+        if(skipOptions)
+        {
+            StartCoroutine(VRButtonAction());
+        }
 
     }
 

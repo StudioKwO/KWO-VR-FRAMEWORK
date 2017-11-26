@@ -49,6 +49,8 @@ public class VideoController : MonoBehaviour
     private Text videoPosition;
     private Text videoDuration;
 
+    public bool IsWidgetOpen { get { return volumeWidget.activeSelf; } }
+
     private void Awake()
     {
         foreach (Text t in GetComponentsInChildren<Text>())

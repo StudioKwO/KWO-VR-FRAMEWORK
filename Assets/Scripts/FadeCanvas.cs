@@ -53,7 +53,7 @@ public class FadeCanvas : MonoBehaviour
         table.Add("time", timeToFade);
         table.Add("name", name);
         table.Add("looptype", loopType);
-        table.Add("onupdatetarget", gameObject);
+        table.Add("onupdatetarget", this.gameObject);
         table.Add("oncomplete", "OnFadeInComplete");
         table.Add("onupdate", "OnFadeCanvasCallback");
         table.Add("easetype", easeType);
@@ -71,7 +71,7 @@ public class FadeCanvas : MonoBehaviour
         table.Add("time", timeToFade);
         table.Add("name", name);
         table.Add("looptype", loopType);
-        table.Add("onupdatetarget", gameObject);
+        table.Add("onupdatetarget", this.gameObject);
         table.Add("oncomplete", "OnFadeOutComplete");
         table.Add("onupdate", "OnFadeCanvasCallback");
         table.Add("easetype", easeType);

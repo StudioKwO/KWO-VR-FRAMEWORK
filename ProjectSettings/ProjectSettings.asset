@@ -156,6 +156,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.studioKwO.VrFramework
+    Standalone: com.oculus.UnitySample
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 22
@@ -276,8 +277,8 @@ PlayerSettings:
   - m_BuildTarget: Android
     m_Enabled: 1
     m_Devices:
-    - cardboard
     - Oculus
+    - cardboard
   m_BuildTargetEnableVuforiaSettings: []
   openGLRequireES31: 1
   openGLRequireES31AEP: 1

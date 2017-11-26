@@ -66,8 +66,8 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(PlayerPortraitUpdate());
                 break;
             case AppState.MENU_VR:
-                vrInputModule.enabled = false;
-                touchInputModule.enabled = true;
+                vrInputModule.enabled = true;
+                touchInputModule.enabled = false;
                 StartCoroutine(PlayerVrMenuUpdate());
                 break;
             case AppState.MENU_PORTRAIT:
@@ -76,12 +76,14 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(PlayerPortraitMenuUpdate());
                 break;
             case AppState.EXIT_MENU_VR:
-                vrInputModule.enabled = false;
-                touchInputModule.enabled = true;
+                vrInputModule.enabled = true;
+                touchInputModule.enabled = false;
+                StartCoroutine(PlayerVrExitUpdate());
                 break;
             case AppState.EXIT_MENU_PORTRAIT:
                 vrInputModule.enabled = false;
                 touchInputModule.enabled = true;
+                StartCoroutine(PlayerPortraitExitUpdate());
                 break;
             default:
                 break;
@@ -93,7 +95,14 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        StartCoroutine(ChangeToPortrait());
+        if (deviceName != "Oculus")
+        {
+            StartCoroutine(ChangeToPortrait());
+        }
+        else
+        {
+            StartCoroutine(ChangeToVr());
+        }
     }
 
     // Use this for initialization
@@ -220,9 +229,10 @@ public class PlayerController : MonoBehaviour
             //Debug.Log(string.Format("The delta angle between the player and the menu is: {0}", deltaY));
             if (!vrMenuController.IsRotating && Mathf.Abs(deltaY) > vrMenuController.minRotationAngle)
             {
+                yield return new WaitForSeconds(0.2f);
                 //Need to check the rotation of the camera, something is going wrong 
                 //Debug.Log(string.Format("The delta of the rotation of the camera and the video player pivot is: {0}", Mathf.Abs(Mathf.DeltaAngle(lastYAngle, cameraTrans.rotation.eulerAngles.y))));
-                if (Mathf.Abs(Mathf.DeltaAngle(lastYAngle, cameraTrans.rotation.eulerAngles.y)) <= 0.001f)
+                if (Mathf.Abs(lastYAngle - cameraTrans.rotation.eulerAngles.y) <= 0.001f)
                 {
                     //Rotate the menu options to the camera rotation. TODO:Add the contribution of the player speed to catch up with him.
                     vrMenuController.RotateAdd(new Vector3(0.0f, deltaY), menuPivot.gameObject);

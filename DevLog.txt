@@ -1,17 +1,11 @@
 Log das atividades:
 
-TODO: 
-- Escolher o texto que vai estar presente no menu final
+TODO:
 - Implementar botões e texturas melhores para o video player
-- Corrigir as proporções dos ícones dos menus no modo portrait
-- O highlight dos botões da tela final não estão funcionando como devem, o high persiste mesmo depois de não mais selecionando o botão.
-- A interação com o scroller está buggado, não responsivo, ou o highlight no video scroll está na posição errada em relação a posição do input.
 - Alterar o script scrubber events. Ele atualmente foi feito apenas para funcionar quando utilizando o modo VR, não é compatível com o modo Portrait (que causa a baixa responsávidade do scrubber do video player)
-- Menu no modo VR não está rotacionando quando faço o build atual.
-- Pular a tela de opção inicial, sempre começar esse projeto no modo VR.
 
 01/11/2017
-- Conitnuação da implementação da tela inicial com a opção de iniciar o app no modo VR, ou no modo retrato.
+- Continuação da implementação da tela inicial com a opção de iniciar o app no modo VR, ou no modo retrato.
 - Criação dos retangulos dos botões de interação dessas opções, onde como estou utilizando Curve UI, tive que criar um mode de interação customizada.
 - Ainda existem bugs de alinhamento do video, na rotação, e na interação dos butões do video player no modo portrait.
 
@@ -44,4 +38,15 @@ TODO:
 - Alteração no player controller para mudar o tipo de plataforma com facilidade
 - Adição do video final
 - Correção das proporções do player no modo portrait
+
+25/11/2017
+- Build para Gear VR
+- Correções de bugs na movimentação do menu
+- Mudança do menu final
+
+26/11/2017
+- Correções no scrubber
+- Mudanças e correções na interação com o menu
+- Mudar o video para um tamanho menor para poder fazer o build corretamente
+- Build funciona no Gear VR
 

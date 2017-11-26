@@ -84,6 +84,7 @@ public class ExitMenu : MonoBehaviour {
         fadeCanvas.OnFadeOut();
         yield return new WaitUntil(IsFaded);
         playerController.UpdateState(AppState.VIDEO_VR);
+        reticleMeshRender.enabled = false;
 
 
     }

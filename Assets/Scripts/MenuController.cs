@@ -26,6 +26,7 @@ public class MenuController : MonoBehaviour
     private bool isInteracting = false;
 
     private MeshRenderer reticleMeshRender;
+    private VideoController videoController;
 
     /// <summary>
     /// Display canvas of the video player, where the fade effect will be applied
@@ -95,6 +96,7 @@ public class MenuController : MonoBehaviour
     private void Awake()
     {
         GameObject reticlePointer = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<GvrReticlePointer>().gameObject;
+        videoController = GetComponent<VideoController>();
         reticleMeshRender = reticlePointer.GetComponent<MeshRenderer>();
     }
 
@@ -108,9 +110,16 @@ public class MenuController : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        // Debug.Log("Menu state: " + menuState);
+        Debug.Log("Is interacting: " + IsInteracting);
+        Debug.Log("Is Rotating: " + isRotating);
+    }
+
     public void OnFadeIn()
     {
-        if(type == MenuType.VR)
+        if (type == MenuType.VR)
             reticleMeshRender.enabled = true;
 
         fadeCanvas.OnFadeIn("video_controller_fadein");
@@ -121,7 +130,7 @@ public class MenuController : MonoBehaviour
     {
         yield return new WaitForSeconds(fadeTime);
 
-        while (type == MenuType.VR && (isRotating || isInteracting))
+        while (type == MenuType.VR && (isRotating || IsInteracting))
         {
             yield return null;
         }
@@ -140,6 +149,10 @@ public class MenuController : MonoBehaviour
         fadeCanvas.OnFadeOut("video_controller_fadeout");
         if (type == MenuType.VR)
             reticleMeshRender.enabled = false;
+        if (videoController.IsWidgetOpen)
+        {
+            videoController.OnToggleVolume();
+        }
     }
 
     public void OnPointerEnter()
@@ -161,7 +174,7 @@ public class MenuController : MonoBehaviour
         table.Add("time", 1.0f);
         table.Add("easetype", iTween.EaseType.easeInOutCubic);
         table.Add("oncomplete", "OnRotationComplete");
-        table.Add("oncompletetarget", gameObject);
+        table.Add("oncompletetarget", this.gameObject);
         table.Add("amount", value);
         iTween.RotateAdd(gameObject, table);
     }
