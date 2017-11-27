@@ -15,11 +15,14 @@
 using UnityEngine;
 using System.Collections;
 
+#pragma warning disable 0618 // Ignore GvrAudio* deprecation
+
 /// GVR audio listener component that enhances AudioListener to provide advanced spatial audio
 /// features.
 ///
 /// There should be only one instance of this which is attached to the AudioListener's game object.
-[AddComponentMenu("GoogleVR/Audio/GvrAudioListener")]
+[System.Obsolete("GvrAudioListener is deprecated. Please upgrade to Resonance Audio (https://developers.google.com/resonance-audio/migrate).")]
+[AddComponentMenu("GoogleVR/Audio/Deprecated/GvrAudioListener")]
 public class GvrAudioListener : MonoBehaviour {
   /// Global gain in decibels to be applied to the processed output.
   public float globalGainDb = 0.0f;
@@ -32,6 +35,11 @@ public class GvrAudioListener : MonoBehaviour {
   private GvrAudio.Quality quality = GvrAudio.Quality.High;
 
   void Awake () {
+#if UNITY_EDITOR
+    Debug.LogWarningFormat(gameObject,
+        "Game object '{0}' uses deprecated {1} component.\nPlease upgrade to Resonance Audio ({2}).",
+        name, GetType().Name, "https://developers.google.com/resonance-audio/migrate");
+#endif  // UNITY_EDITOR
     GvrAudio.Initialize(this, quality);
   }
 
@@ -47,3 +55,5 @@ public class GvrAudioListener : MonoBehaviour {
     GvrAudio.UpdateAudioListener(globalGainDb, occlusionMask);
   }
 }
+
+#pragma warning restore 0618 // Restore warnings

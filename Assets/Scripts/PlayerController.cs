@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.XR;
+using UnityEngine.VR;
 
 //TODO: 
 // https://gamedev.stackexchange.com/questions/93592/graphics-raycaster-of-unity-how-does-it-work check this for the graphics raycast
@@ -252,28 +252,32 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator ChangeToVr()
     {
-        if (!XRSettings.enabled)
-        {
+        //if (!XRSettings.enabled)
+        //{
 
-            XRSettings.LoadDeviceByName(deviceName);
-            yield return null;
+        //    XRSettings.LoadDeviceByName(deviceName);
+        //    
 
-            XRSettings.enabled = true;
+        //    XRSettings.enabled = true;
 
-        }
+        //}
+
+        yield return null;
     }
 
     private IEnumerator ChangeToPortrait()
     {
-        if (XRSettings.enabled)
-        {
+        //if (XRSettings.enabled)
+        //{
 
-            XRSettings.LoadDeviceByName("");
-            yield return null;
+        //    XRSettings.LoadDeviceByName("");
+        //    yield return null;
 
-            Camera.main.ResetAspect();
+        //    Camera.main.ResetAspect();
 
-        }
+        //}
+
+        yield return null;
     }
 
 

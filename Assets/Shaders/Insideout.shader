@@ -10,8 +10,9 @@ Properties {
 
 SubShader {
 	Tags { "RenderType"="Opaque" }
+	Lighting Off
 	Cull front    // ADDED BY BERNIE, TO FLIP THE SURFACES
-	LOD 100
+	//LOD 100
 	
 	Pass {  
 		CGPROGRAM
@@ -33,6 +34,7 @@ SubShader {
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			fixed4 _Color;
+
 			
 			v2f vert (appdata_t v)
 			{

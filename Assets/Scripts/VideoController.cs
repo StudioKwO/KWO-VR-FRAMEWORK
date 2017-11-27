@@ -130,7 +130,7 @@ public class VideoController : MonoBehaviour
                 {
                    
                     videoPlayer.Play();
-                    sphereRend.material.color = Color.white;
+                    //sphereRend.material.color = Color.white;
                     StartCoroutine(UpdateVideoVR());
                 }
                 break;
@@ -138,7 +138,7 @@ public class VideoController : MonoBehaviour
                 if (!videoPlayer.isPlaying && type == MenuType.PORTRAIT)
                 {
                     videoPlayer.Play();
-                    sphereRend.material.color = Color.white;
+                    //sphereRend.material.color = Color.white;
                     StartCoroutine(UpdateVideoPortrait());
                 }
                 break;
@@ -155,10 +155,10 @@ public class VideoController : MonoBehaviour
     {
         videoPlayer = videoSphere.GetComponent<VideoPlayer>();
         playerController = GetComponentInParent<PlayerController>();
-        foreach (ScrubberEvents s in GetComponentsInChildren<ScrubberEvents>(true))
-        {
-            s.VideoManager = this;
-        }
+        //foreach (ScrubberEvents s in GetComponentsInChildren<ScrubberEvents>(true))
+        //{
+        //    s.VideoManager = this;
+        //}
         sphereRend = videoSphere.GetComponent<Renderer>();
 
 
