@@ -12,7 +12,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Studio KwO
-  productName: KWO VR Framework
+  productName: Missiva Fulldome
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -259,7 +259,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 4619ab5dbf0e9d846bb616ae1263dff8, type: 3}
+      m_Icon: {fileID: 2800000, guid: 7b58efb366b5ef04d896a74538bc9910, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

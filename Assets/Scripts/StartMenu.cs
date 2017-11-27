@@ -148,8 +148,8 @@ public class StartMenu : MonoBehaviour
 
     public IEnumerator VRButtonAction()
     {
-        optionsFade.ToggleFade();
 
+        optionsFade.ToggleFade();        
         yield return new WaitForSeconds(optionsFade.timeToFade);
         playerController.UpdateState(AppState.VIDEO_VR);
 

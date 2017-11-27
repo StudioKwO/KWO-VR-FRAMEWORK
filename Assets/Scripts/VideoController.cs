@@ -23,6 +23,7 @@ public class VideoController : MonoBehaviour
     /// </summary>
     public GameObject videoSphere;
     public float secondsToSkip = 3.0f;
+    private Renderer sphereRend;
 
     public delegate void VideoEnd();
     public event VideoEnd OnVideoVrEnd;
@@ -53,6 +54,8 @@ public class VideoController : MonoBehaviour
 
     private void Awake()
     {
+
+
         foreach (Text t in GetComponentsInChildren<Text>())
         {
             if (t.gameObject.name == "curpos_text")
@@ -125,7 +128,9 @@ public class VideoController : MonoBehaviour
             case AppState.VIDEO_VR:
                 if (!videoPlayer.isPlaying && type == MenuType.VR)
                 {
+                   
                     videoPlayer.Play();
+                    sphereRend.material.color = Color.white;
                     StartCoroutine(UpdateVideoVR());
                 }
                 break;
@@ -133,6 +138,7 @@ public class VideoController : MonoBehaviour
                 if (!videoPlayer.isPlaying && type == MenuType.PORTRAIT)
                 {
                     videoPlayer.Play();
+                    sphereRend.material.color = Color.white;
                     StartCoroutine(UpdateVideoPortrait());
                 }
                 break;
@@ -153,6 +159,8 @@ public class VideoController : MonoBehaviour
         {
             s.VideoManager = this;
         }
+        sphereRend = videoSphere.GetComponent<Renderer>();
+
 
     }
 
@@ -329,7 +337,9 @@ public class VideoController : MonoBehaviour
     public void OnToggleVolume()
     {
         bool visible = !volumeWidget.activeSelf;
+        volumeSlider.value = videoPlayer.GetTargetAudioSource(0).volume;
         volumeWidget.SetActive(visible);
+
     }
 
     public void OnPlayPause()

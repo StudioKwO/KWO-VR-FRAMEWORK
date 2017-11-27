@@ -1,8 +1,7 @@
 Log das atividades:
 
 TODO:
-- Implementar botões e texturas melhores para o video player
-- Alterar o script scrubber events. Ele atualmente foi feito apenas para funcionar quando utilizando o modo VR, não é compatível com o modo Portrait (que causa a baixa responsávidade do scrubber do video player)
+- Corrigir as interações no modo portrait
 
 01/11/2017
 - Continuação da implementação da tela inicial com a opção de iniciar o app no modo VR, ou no modo retrato.

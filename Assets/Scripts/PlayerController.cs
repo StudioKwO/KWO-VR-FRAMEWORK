@@ -95,6 +95,14 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        vrMenuController = vrControls.GetComponent<MenuController>();
+        portraitMenuController = portraitControls.GetComponent<MenuController>();
+        startMenu = GetComponentInChildren<StartMenu>();
+        menuPivot = vrControls.transform.parent;
+        cameraTrans = GetComponentInChildren<Camera>().gameObject.transform;
+        vrInputModule = eventSystem.GetComponent<GvrPointerInputModule>();
+        touchInputModule = eventSystem.GetComponent<StandaloneInputModule>();
+
         if (deviceName != "Oculus")
         {
             StartCoroutine(ChangeToPortrait());
@@ -108,14 +116,6 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        vrMenuController = vrControls.GetComponent<MenuController>();
-        portraitMenuController = portraitControls.GetComponent<MenuController>();
-        startMenu = GetComponentInChildren<StartMenu>();
-        menuPivot = vrControls.transform.parent;
-        cameraTrans = GetComponentInChildren<Camera>().gameObject.transform;
-        vrInputModule = eventSystem.GetComponent<GvrPointerInputModule>();
-        touchInputModule = eventSystem.GetComponent<StandaloneInputModule>();
-
         //Start the application in the menu state
         UpdateState(AppState.MENU_PORTRAIT);
     }
@@ -133,7 +133,6 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlayerVrMenuUpdate()
     {
-        //TODO: this is the place where the postion of the canvas should be set for the portrait mode
         //Debug.Log(string.Format("The position of the vr mode button on the viewport is: {0}", vrModeButton.transform.position));
         //Debug.Log(string.Format("The position of the portrait mode button on the viewport is: {0}",portraitModeButton.transform.position));
         yield return ChangeToVr();
@@ -229,7 +228,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log(string.Format("The delta angle between the player and the menu is: {0}", deltaY));
             if (!vrMenuController.IsRotating && Mathf.Abs(deltaY) > vrMenuController.minRotationAngle)
             {
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.3f);
                 //Need to check the rotation of the camera, something is going wrong 
                 //Debug.Log(string.Format("The delta of the rotation of the camera and the video player pivot is: {0}", Mathf.Abs(Mathf.DeltaAngle(lastYAngle, cameraTrans.rotation.eulerAngles.y))));
                 if (Mathf.Abs(lastYAngle - cameraTrans.rotation.eulerAngles.y) <= 0.001f)
